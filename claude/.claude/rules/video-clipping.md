@@ -6,6 +6,10 @@ The full skill, including all scripts, lives at `.claude/skills/video-clipping/`
 
 Deliver actual short-video files. Do not stop at clip recommendations.
 
+## Go
+
+When the user says **"go"** (alone or with a short hint like "go gaming"), run the Go workflow in `.claude/skills/video-clipping/references/go-workflow.md` end to end without stopping: `trends.py scan` YouTube for what is trending in clips, group the results into five topics, `trends.py score` them by views, `trends.py source` a long-form video for the winner, `trends.py download` it, then clip it with the workflow below. Use `python` wherever `py` is not installed.
+
 ## Defaults
 
 Five clips, 20–60 seconds each, 1080×1920 at 30 fps, unless the user says otherwise. All frame ranges are half-open `[startFrame, endFrameExclusive)`.
@@ -69,6 +73,7 @@ Automated QC cannot judge whether the hook lands. Watch each clip before deliver
 
 ## Detail
 
+@.claude/skills/video-clipping/references/go-workflow.md
 @.claude/skills/video-clipping/references/selection-workflow.md
 @.claude/skills/video-clipping/references/artifact-contracts.md
 @.claude/skills/video-clipping/references/reframing.md

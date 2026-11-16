@@ -68,6 +68,18 @@ Optional on top. Adds the YOLO detector, which is the most accurate of the three
 
 Full detail in [reframing.md](references/reframing.md).
 
+## Go workflow (trends and download)
+
+Only needed when you say "go" and want the skill to find a trending topic and download the source itself.
+
+```powershell
+winget install yt-dlp.yt-dlp      # Windows
+pip install yt-dlp                # any platform
+brew install yt-dlp               # macOS
+```
+
+No API key or sign-in. If searches start failing, update it (`yt-dlp -U`, or `pip install -U yt-dlp`): YouTube changes often and old versions break. See [go-workflow.md](references/go-workflow.md).
+
 ## GPU
 
 Not required anywhere. The default reframing tier samples a few frames per second instead of processing every frame, which is why a weak GPU does not hold this skill back.

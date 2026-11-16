@@ -59,6 +59,7 @@ def main() -> int:
     has_faster = module_available("faster_whisper")
     has_whisper = module_available("whisper")
     has_yolo = module_available("ultralytics")
+    yt_dlp = shutil.which("yt-dlp")
 
     # Node is only needed for captions and overlays. shell=True on Windows
     # because `node` resolves through a .cmd shim that bare exec misses.
@@ -96,6 +97,7 @@ def main() -> int:
             "opencv-python": has_cv2,
             "ultralytics": has_yolo,
             "node": node_version,
+            "yt-dlp": yt_dlp,
             "cuda": cuda,
             "cudaDevice": cuda_device,
         },
@@ -109,6 +111,7 @@ def main() -> int:
         "reframe-tracked": has_cv2,
         "quality-check": bool(ffmpeg and ffprobe),
         "captions-and-overlays": bool(node_version),
+        "go-trends-and-download": bool(yt_dlp),
     }
     report["capabilities"] = capabilities
 
@@ -142,6 +145,12 @@ def main() -> int:
             "what": "Node.js 18+",
             "unlocks": "captions and overlays via scaffold_remotion.py; plain vertical cuts need nothing",
             "install": "https://nodejs.org  |  winget install OpenJS.NodeJS  |  brew install node",
+        })
+    if not yt_dlp:
+        missing.append({
+            "what": "yt-dlp",
+            "unlocks": "the Go workflow: trend scan, source search, and downloading the source video",
+            "install": "winget install yt-dlp.yt-dlp  |  pip install yt-dlp  |  brew install yt-dlp",
         })
     report["missing"] = missing
 

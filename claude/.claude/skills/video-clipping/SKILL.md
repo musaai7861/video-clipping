@@ -1,6 +1,6 @@
 ---
 name: video-clipping
-description: "Use when turning a long-form video into short-form clips for TikTok, Instagram Reels, or YouTube Shorts - requests like "clip this podcast", "find the best moments", "make five shorts", or "turn this long video into reels". Performs word-level transcription, transcript-first candidate selection, deterministic weighted scoring with temporal deduplication and topic diversity, frame-accurate cutting, CPU-friendly 9:16 subject-aware reframing, and local ffmpeg quality checks. Needs only Python 3.10+ and ffmpeg; no GPU and no API keys anywhere."
+description: "Use when turning a long-form video into short-form clips for TikTok, Instagram Reels, or YouTube Shorts - requests like "clip this podcast", "find the best moments", "make five shorts", or "turn this long video into reels" - and when the user just says "go", which runs the Go workflow: scan YouTube for trending clip topics, score five topics by views, download a long-form source for the winner, and clip it. Performs word-level transcription, transcript-first candidate selection, deterministic weighted scoring with temporal deduplication and topic diversity, frame-accurate cutting, CPU-friendly 9:16 subject-aware reframing, and local ffmpeg quality checks. Needs only Python 3.10+ and ffmpeg; no GPU and no API keys anywhere."
 ---
 
 
@@ -9,6 +9,10 @@ description: "Use when turning a long-form video into short-form clips for TikTo
 Turn one long-form source into actual short-video files. Do not stop at clip recommendations.
 
 This skill is self-contained. It needs Python 3.10+ and ffmpeg. Everything else is optional and it tells you what you are missing. See [INSTALL.md](INSTALL.md) if a command reports a missing dependency.
+
+## Go
+
+If the user says **"go"** (alone, or with a hint like "go gaming"), read [go-workflow.md](references/go-workflow.md) and run it end to end without stopping to ask: `scripts/trends.py scan` YouTube for what is trending in clips, group the results into five topics, `trends.py score` them by views, `trends.py source` a long-form video for the winner, `trends.py download` it, then run the workflow below on it. Needs `yt-dlp`; no API key.
 
 ## Defaults
 
@@ -73,6 +77,15 @@ py scripts/clipping_pipeline.py windows --request 'C:\path\shorts-run\SHORTS_REQ
 py scripts/clipping_pipeline.py rank --request 'C:\path\shorts-run\SHORTS_REQUEST.json' --candidates 'C:\path\shorts-run\analysis\candidates.raw.json'
 py scripts/clipping_pipeline.py materialize --run-root 'C:\path\shorts-run'
 py scripts/clipping_pipeline.py validate --run-root 'C:\path\shorts-run'
+```
+
+The Go workflow, before the commands above:
+
+```powershell
+py scripts/trends.py scan --output 'C:\pathun	rends\scan.json'
+py scripts/trends.py score --scan 'C:\pathun	rends\scan.json' --topics 'C:\pathun	rends	opics.json' --output 'C:\pathun	rendsanked-topics.json'
+py scripts/trends.py source --ranked 'C:\pathun	rendsanked-topics.json' --output 'C:\pathun	rends\source-candidates.json'
+py scripts/trends.py download --candidates 'C:\pathun	rends\source-candidates.json' --run-root 'C:\pathun'
 ```
 
 Reframing, when a static crop will not do:
